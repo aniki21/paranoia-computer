@@ -1,10 +1,27 @@
+<h2>Announcements</h2>
+<%= form_tag "#", id: "announce", class: "form-horizontal" do %>
+  <div class="form-group">
+    <div class="col-md-6">
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-bullhorn"></i></span>
+        <%= text_field_tag :announcement, "", id: "announcement", class: "form-control", placeholder: "An unanticipated line for the Computer" %>
+      </div>
+      <small id="prev-announcement" class="help-block">&hellip;</small>
+    </div>
+  </div>
+<% end %>
+
 <h2>Generic lines</h2>
 <% @generic_lines.each do |line| %>
   <%= link_to line.name, "javascript:void(0);", class: "line btn btn-#{line.button_class}", data: { "line-id": line.id } %>
 <% end %>
 
+<hr />
+
+
 <% if @mission_lines.any? %>
-  <h2>Mission <%= @mission_id %></h2>
+  <hr />
+  <h2>Mission-specific</h2>
   <% @mission_lines.each do |line| %>
     <%= link_to line.name, "javascript:void(0);", class: "line btn btn-#{line.button_class}", data: { "line-id": line.id } %>
   <% end %>
@@ -19,5 +36,29 @@
       method: "get",
       data: { l: line_id }
     })
+  });
+  
+  $('#announce').on('submit',function(e){
+    e.preventDefault();
+    var message = $('#announcement').val();
+    if(message != ""){
+      $.ajax({
+        url: "<%= say_voice_lines_path %>",
+        method: "get",
+        data: { m: message }
+      });
+      $('#prev-announcement').html(message);
+      $('#announcement').val("");
+    }
+  });
+
+  $('#announcement').on('keydown',function(e){
+    var ths = this, $ths = $(this)
+    if(e.which == 38){
+      prev = $('#prev-announcement').html();
+      $ths.val(prev);
+      l = $ths.val().length * 2;
+      ths.setSelectionRange(l,l);
+    }
   });
 </script>

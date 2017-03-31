@@ -3,16 +3,24 @@ class VoiceLinesController < ApplicationController
     @generic_lines = VoiceLine.generic
   end
   
-  def new
-  end
-
   def create
-  end
-
-  def edit
+    line = VoiceLine.new(line_params)
+    if line.save
+      flash[:success] = "New line '#{line.name}' saved"
+    else
+      flash[:error] = line.errors.full_messages.to_sentence
+    end
+    redirect_to voice_lines_path and return
   end
 
   def update
+    line = VoiceLine.find_by_id(params[:id])
+    if line.update_attributes(line_params)
+      flash[:success] = "Line '#{line.name}' updated"
+    else
+      flash[:error] = line.errors.full_messages.to_sentence
+    end
+    redirect_to voice_lines_path and return
   end
 
   def destroy
@@ -35,6 +43,11 @@ class VoiceLinesController < ApplicationController
       Voice.say(params[:m])
     end
     render text: "playing"
+  end
+
+  private
+  def line_params
+    params.require(:voice_line).permit(:name,:lines,:button_class, :mission_id)
   end
 
 end

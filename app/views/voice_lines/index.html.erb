@@ -47,7 +47,7 @@
     </tr>
   </thead>
   <tbody>
-    <%= render partial: "voice_lines/line", locals: { line: VoiceLine.new(mission_id), generic: false } %> 
+    <%= render partial: "voice_lines/line", locals: { line: VoiceLine.new(mission_id: mission_id), generic: false } %> 
     <% mission_lines = VoiceLine.for_mission(mission_id) %>
     <% mission_lines.each do |line| %>
       <%= render partial: "voice_lines/line", locals: { line: line, generic: false } %> 

@@ -1,0 +1,5 @@
+<% flash.each do |type,message| %>
+  <div class="alert alert-<%= flash_class(type) %>">
+    <p><strong><%= type.humanize %>:</strong> <%= message %></p>
+  </div>
+<% end %>

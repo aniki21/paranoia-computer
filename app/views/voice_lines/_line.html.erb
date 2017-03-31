@@ -1,4 +1,4 @@
-<%= form_for line, class: "form-horizontal" do |f| %>
+<%= form_for line, html: { class: "form-horizontal" } do |f| %>
   <tr>
     <% unless generic %>
       <td><%= f.number_field :mission_id, class: "form-control" %></td>
