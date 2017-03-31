@@ -1,0 +1,18 @@
+<%= form_for line, class: "form-horizontal" do |f| %>
+  <tr>
+    <% unless generic %>
+      <td><%= f.number_field :mission_id, class: "form-control" %></td>
+    <% end %>
+    <td><%= f.text_field :name, class: "form-control" %></td>
+    <td>
+      <%= f.text_field :lines, class: "form-control" %></td>
+    </td>
+    <td><%= f.text_field :button_class, class: "form-control" %></td>
+    <td>
+      <%= f.submit "Save", class: "btn btn-success" %>
+      <% unless line.new_record? %>
+        <%= link_to "<i class=\"fa fa-times\"></i>".html_safe, voice_line_path(line.id), class: "btn btn-danger", method: :delete, data: { confirm: "Are you sure?" } %>
+      <% end %>
+    </td>
+  </tr>
+<% end %>

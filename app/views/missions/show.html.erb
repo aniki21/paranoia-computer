@@ -1,0 +1,23 @@
+<h2>Generic lines</h2>
+<% @generic_lines.each do |line| %>
+  <%= link_to line.name, "javascript:void(0);", class: "line btn btn-#{line.button_class}", data: { "line-id": line.id } %>
+<% end %>
+
+<% if @mission_lines.any? %>
+  <h2>Mission <%= @mission_id %></h2>
+  <% @mission_lines.each do |line| %>
+    <%= link_to line.name, "javascript:void(0);", class: "line btn btn-#{line.button_class}", data: { "line-id": line.id } %>
+  <% end %>
+<% end %>
+
+<script type="text/javascript">
+  $('a.line').on('click',function(e){
+    e.preventDefault();
+    var line_id = $(this).attr('data-line-id');
+    $.ajax({
+      url: "<%= say_voice_lines_path %>",
+      method: "get",
+      data: { l: line_id }
+    })
+  });
+</script>

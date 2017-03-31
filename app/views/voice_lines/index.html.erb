@@ -1,0 +1,70 @@
+<h1>Manage voice lines</h1>
+
+<h2>Create new</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width:100px;">Mission</th>
+      <th style="width:200px;">Name</th>
+      <th>Lines <small style="font-weight:normal;">Pipe-separated</small></th>
+      <th style="width:200px;">Button</th>
+      <th style="width:120px;">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "voice_lines/line", locals: { line: VoiceLine.new(), generic: false } %> 
+  </tbody>
+</table>
+
+<h2>Generic lines</h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width:200px;">Name</th>
+      <th>Lines <small style="font-weight:normal;">Pipe-separated</small></th>
+      <th style="width:200px;">Button</th>
+      <th style="width:120px;">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+<% @generic_lines.each do |line| %>
+  <%= render partial: "voice_lines/line", locals: { line: line, generic: true } %> 
+<% end %>
+  </tbody>
+</table>
+
+<% if @missions.any? %>
+  <% @missions.each do |mission_id| %>
+    <h2>Mission <%= mission_id %></h2>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width:100px;">Mission</th>
+      <th style="width:200px;">Name</th>
+      <th>Lines <small style="font-weight:normal;">Pipe-separated</small></th>
+      <th style="width:200px;">Button</th>
+      <th style="width:120px;">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= render partial: "voice_lines/line", locals: { line: VoiceLine.new(mission_id), generic: false } %> 
+    <% mission_lines = VoiceLine.for_mission(mission_id) %>
+    <% mission_lines.each do |line| %>
+      <%= render partial: "voice_lines/line", locals: { line: line, generic: false } %> 
+    <% end %>
+  </tbody>
+</table>
+  <% end %>
+<% end %>
+
+<script type="text/javascript">
+  $('a.line').on('click',function(e){
+    e.preventDefault();
+    var line_id = $(this).attr('data-line-id');
+    $.ajax({
+      url: "<%= say_voice_lines_path %>",
+      method: "get",
+      data: { l: line_id }
+    })
+  });
+</script>
