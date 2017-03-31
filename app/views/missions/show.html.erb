@@ -29,13 +29,18 @@
 
 <script type="text/javascript">
   $('a.line').on('click',function(e){
+    var btn = $(this);
     e.preventDefault();
-    var line_id = $(this).attr('data-line-id');
-    $.ajax({
-      url: "<%= say_voice_lines_path %>",
-      method: "get",
-      data: { l: line_id }
-    })
+    if(btn.attr("disabled") == undefined){
+      btn.attr("disabled",true);
+      var line_id = $(this).attr('data-line-id');
+      $.ajax({
+        url: "<%= say_voice_lines_path %>",
+        method: "get",
+        data: { l: line_id },
+        complete: function(){ btn.removeAttr("disabled"); }
+      });
+    }
   });
   
   $('#announce').on('submit',function(e){
@@ -52,7 +57,7 @@
     }
   });
 
-  $('#announcement').on('keydown',function(e){
+  $('#announcement').on('keyup',function(e){
     var ths = this, $ths = $(this)
     if(e.which == 38){
       prev = $('#prev-announcement').html();
