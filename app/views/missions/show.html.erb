@@ -12,19 +12,19 @@
 <% end %>
 
 <h2>Generic lines</h2>
-<% @generic_lines.each do |line| %>
-  <%= link_to line.name, "javascript:void(0);", class: "line btn btn-#{line.button_class}", data: { "line-id": line.id } %>
-<% end %>
-
-<hr />
-
+<div class="row">
+  <% @generic_lines.each do |line| %>
+    <%= render partial: "voice_lines/button", locals: { line: line } %>
+  <% end %>
+</div>
 
 <% if @mission_lines.any? %>
-  <hr />
   <h2>Mission-specific</h2>
-  <% @mission_lines.each do |line| %>
-    <%= link_to line.name, "javascript:void(0);", class: "line btn btn-#{line.button_class}", data: { "line-id": line.id } %>
-  <% end %>
+  <div class="row">
+    <% @mission_lines.each do |line| %>
+      <%= render partial: "voice_lines/button", locals: { line: line } %>
+    <% end %>
+  </div>
 <% end %>
 
 <script type="text/javascript">
