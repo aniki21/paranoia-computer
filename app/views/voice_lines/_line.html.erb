@@ -1,3 +1,4 @@
+<% generic ||= false %>
 <%= form_for line, html: { class: "form-horizontal" } do |f| %>
   <tr>
     <% unless generic %>
@@ -5,9 +6,12 @@
     <% end %>
     <td><%= f.text_field :name, class: "form-control" %></td>
     <td>
-      <%= f.text_field :lines, class: "form-control" %></td>
+      <%= f.text_field :lines, class: "form-control", data: { preview_id: preview_id } %></td>
     </td>
     <td><%= f.text_field :button_class, class: "form-control" %></td>
+    <td>
+      <%= link_to "<i class=\"fa fa-volume-up\"></i>".html_safe, "javscript:void(0);", class: "btn btn-info preview", title: "preview", data: { preview_id: preview_id } %>
+    </td>
     <td>
       <%= f.submit "Save", class: "btn btn-success" %>
       <% unless line.new_record? %>

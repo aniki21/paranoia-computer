@@ -42,7 +42,7 @@ class VoiceLinesController < ApplicationController
     if params[:m].present?
       Voice.say(params[:m])
     end
-    render text: "playing"
+    render plain: "playing"
   end
 
   private
