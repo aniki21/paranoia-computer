@@ -38,16 +38,16 @@ class VoiceLinesController < ApplicationController
     if params[:l].present?
       line = VoiceLine.find_by_id(params[:l])
       unless line.blank?
-        line.say
+        file_url = line.say
       else
-        Voice.say("Response not found")
+        file_url = Voice.write("Response not found")
       end
     end
 
     if params[:m].present?
-      Voice.say(params[:m])
+      file_url = Voice.write(params[:m],"announce.wav")
     end
-    render plain: "playing"
+    render plain: "/clips/#{file_url}"
   end
 
   private

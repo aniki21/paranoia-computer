@@ -3,7 +3,8 @@ Rails.application.routes.draw do
 
   resources :voice_lines, only: [:index,:create,:update,:destroy] do
     collection do
-      get 'say', to: 'voice_lines#say'
+      match 'say', to: 'voice_lines#say', via: [:get,:post]
+      match 'preview', to: 'voice_lines#preview', via: [:get,:post]
     end
   end
 

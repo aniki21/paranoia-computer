@@ -1,7 +1,7 @@
-<% line_counter = 0 %>
-
 <h1>Manage voice lines</h1>
+<audio id="player" src="/clips/response-not-found.wav" controls></audio>
 
+<% line_counter = 0 %>
 <h2>Create new</h2>
 <table class="table table-striped">
   <thead>
@@ -72,13 +72,17 @@
     e.preventDefault();
     var btn = $(this);
     var previewId = btn.attr('data-preview-id');
-    var text = $('input[data-preview-id='+previewId+']').val();
+    var message = $('input[data-preview-id='+previewId+']').val();
     btn.attr("disabled",true);
-    $.ajax({
-      url: "<%= say_voice_lines_path %>",
-      method: "get",
-      data: { m: text },
-      complete: function(){ btn.removeAttr("disabled"); }
-    });
+      $.ajax({
+        url: "<%= say_voice_lines_path %>",
+        method: "get",
+        data: { m: message },
+        success: function(d,s,x){
+          $('audio#player').attr("src",d);
+          $('audio#player')[0].play();
+        },
+        complete: function(){ btn.removeAttr("disabled"); }
+      });
   });
 </script>
