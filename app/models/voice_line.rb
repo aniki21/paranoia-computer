@@ -5,7 +5,7 @@ class VoiceLine < ApplicationRecord
   scope :for_mission, ->(mission) { where("mission_id = ?",mission).order(mission_id: :asc) }
 
   def say
-    Voice.say(self.line)
+    Voice.write(self.line,self.id)
   end
 
   def options
