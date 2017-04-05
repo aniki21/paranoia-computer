@@ -1,4 +1,5 @@
 # paranoia-computer
 The voice of your friend the computer.
 
-Requires espeak
+eSpeak Javascript implementation by @katsuyan
+https://speak-demo.herokuapp.com/
