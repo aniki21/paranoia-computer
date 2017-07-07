@@ -12,4 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require speak/speakClient
 //= require_tree .
+
+// General-purpose function for consistent options
+var computer_speak = function(line){
+  speak.play(line,{
+    speed: 160,
+    pitch: (Math.ceil(Math.random() * 20) + 50) // vary pitch
+  });
+}

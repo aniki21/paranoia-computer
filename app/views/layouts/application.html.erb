@@ -14,6 +14,12 @@
     <%= javascript_include_tag 'application' %>
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+      var speak_worker_path = '<%= asset_path('speak/speakWorker') %>';
+      var speak_generator_path = '<%= asset_path('speak/speakGenerator') %>';
+    </script>
+    <%= javascript_include_tag 'speak/speakClient' %>
   </head>
 
   <body>
@@ -23,39 +29,55 @@
       <%= yield %>
     </div>
 
-
+    <div id="audio"></div>
     <script type="text/javascript">
-(function() {
-
-  $(function() {
-    $('#play-btn').click(function() {
-      var options;
-      console.log('Speech started');
-      options = {
-        amplitude: 100,
-        wordgap: 0,
-        pitch: 50,
-        speed: 175
-      };
-      speak.play(textarea.value, options, function() {
-        return console.log('Speech finished');
+      // Play a pre-set line
+      $('a.line').on('click',function(e){
+        var btn = $(this);
+        e.preventDefault();
+        if(btn.attr("disabled") == undefined){
+          var line_id = $(this).attr('data-line-id');
+          $.ajax({
+            url: "<%= say_voice_lines_path %>",
+            method: "get",
+            data: { l: line_id },
+            success: function(d,s,x){
+              computer_speak(d);
+            },
+            complete: function(){ btn.removeAttr("disabled"); }
+          });
+        }
       });
-      return false;
-    });
-    $('#pause-btn').click(function() {
-      speak.pause();
-      console.log('Speech paused');
-      return false;
-    });
-    return $('#resume-btn').click(function() {
-      speak.resume();
-      console.log('Speech resumed');
-      return false;
-    });
-  });
-
-}).call(this);
+      
+      // Play an announcement line
+      $('#announce').on('submit',function(e){
+        e.preventDefault();
+        var message = $('#announcement').val();
+        if(message != ""){
+          computer_speak(message);
+          $('#prev-announcement').html(message);
+          $('#announcement').val("");
+        }
+      });
+    
+      // Up-arrow reuses previous announcement
+      $('#announcement').on('keyup',function(e){
+        var ths = this, $ths = $(this)
+        if(e.which == 38){
+          prev = $('#prev-announcement').html();
+          $ths.val(prev);
+          l = $ths.val().length * 2;
+          ths.setSelectionRange(l,l);
+        }
+      });
+      
+      // General-purpose function for consistent options
+      var computer_speak = function(line){
+        speak.play(line,{
+          speed: 160,
+          pitch: (Math.ceil(Math.random() * 20) + 50) // vary pitch
+        });
+      }
     </script>
-    <%= javascript_include_tag 'speak/speakClient' %>
   </body>
 </html>

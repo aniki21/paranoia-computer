@@ -1,5 +1,3 @@
-<audio id="player" src="/clips/response-not-found.wav" controls></audio>
-
 <h2>Announcements</h2>
 <%= form_tag "#", id: "announce", class: "form-horizontal" do %>
   <div class="form-group">
@@ -21,7 +19,7 @@
 </div>
 
 <% if @mission_lines.any? %>
-  <h2>Mission-specific</h2>
+  <h2>Mission <%= @mission_id %></h2>
   <div class="row">
     <% @mission_lines.each do |line| %>
       <%= render partial: "voice_lines/button", locals: { line: line } %>
@@ -29,62 +27,3 @@
   </div>
 <% end %>
 
-<script type="text/javascript">
-  $('a.line').on('click',function(e){
-    var btn = $(this);
-    e.preventDefault();
-    if(btn.attr("disabled") == undefined){
-      var line_id = $(this).attr('data-line-id');
-      $.ajax({
-        url: "<%= say_voice_lines_path %>",
-        method: "get",
-        data: { l: line_id },
-        success: function(d,s,x){
-          $('audio#player').attr("src",d);
-          $('audio#player')[0].play();
-        },
-        complete: function(){ btn.removeAttr("disabled"); }
-      });
-    }
-  });
-  
-  $('#announce').on('submit',function(e){
-    e.preventDefault();
-    var message = $('#announcement').val();
-    if(message != ""){
-      $.ajax({
-        url: "<%= say_voice_lines_path %>",
-        method: "get",
-        data: { m: message },
-        success: function(d,s,x){
-          $('audio#player').attr("src",d);
-          $('audio#player')[0].play();
-        },
-        complete: function(){
-          btn
-        }
-      });
-      $('#prev-announcement').html(message);
-      $('#announcement').val("");
-    }
-  });
-
-  $('audio#player').on('playing',function(e){
-    $('.line').attr("disabled",true);
-  });
-
-  $('audio#player').on('ended',function(e){
-    $(this).attr("src","");
-    $('.line').removeAttr("disabled");
-  });
-
-  $('#announcement').on('keyup',function(e){
-    var ths = this, $ths = $(this)
-    if(e.which == 38){
-      prev = $('#prev-announcement').html();
-      $ths.val(prev);
-      l = $ths.val().length * 2;
-      ths.setSelectionRange(l,l);
-    }
-  });
-</script>

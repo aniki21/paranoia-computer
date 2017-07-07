@@ -1,5 +1,4 @@
 <h1>Manage voice lines</h1>
-<audio id="player" src="/clips/response-not-found.wav" controls></audio>
 
 <% line_counter = 0 %>
 <h2>Create new</h2>
@@ -32,57 +31,47 @@
     </tr>
   </thead>
   <tbody>
-<% @generic_lines.each do |line| %>
-  <%= render partial: "voice_lines/line", locals: { line: line, preview_id: line_counter, generic: true } %> 
-  <% line_counter += 1 %>
-<% end %>
+    <% @generic_lines.each do |line| %>
+      <%= render partial: "voice_lines/line", locals: { line: line, preview_id: line_counter, generic: true } %> 
+      <% line_counter += 1 %>
+    <% end %>
   </tbody>
 </table>
 
 <% if @missions.any? %>
   <% @missions.each do |mission_id| %>
     <h2>Mission <%= mission_id %></h2>
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th style="width:100px;">Mission</th>
-      <th style="width:200px;">Name</th>
-      <th>Lines <small style="font-weight:normal;">Pipe-separated</small></th>
-      <th style="width:100px;">Button</th>
-      <th style="width:50px;">Preview</th>
-      <th style="width:120px;">Action</th>
-    </tr>
-  </thead>
-  <tbody>
-    <%= render partial: "voice_lines/line", locals: { line: VoiceLine.new(mission_id: mission_id), preview_id: line_counter } %> 
-    <% line_counter += 1 %>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th style="width:100px;">Mission</th>
+          <th style="width:200px;">Name</th>
+          <th>Lines <small style="font-weight:normal;">Pipe-separated</small></th>
+          <th style="width:100px;">Button</th>
+          <th style="width:50px;">Preview</th>
+          <th style="width:120px;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render partial: "voice_lines/line", locals: { line: VoiceLine.new(mission_id: mission_id), preview_id: line_counter } %> 
+        <% line_counter += 1 %>
 
-    <% mission_lines = VoiceLine.for_mission(mission_id) %>
-    <% mission_lines.each do |line| %>
-      <%= render partial: "voice_lines/line", locals: { line: line, preview_id: line_counter } %> 
-      <% line_counter += 1 %>
-    <% end %>
-  </tbody>
-</table>
+        <% mission_lines = VoiceLine.for_mission(mission_id) %>
+        <% mission_lines.each do |line| %>
+          <%= render partial: "voice_lines/line", locals: { line: line, preview_id: line_counter } %> 
+          <% line_counter += 1 %>
+        <% end %>
+      </tbody>
+    </table>
   <% end %>
 <% end %>
 
 <script type="text/javascript">
-  $('a.preview').on('click',function(e){
-    e.preventDefault();
-    var btn = $(this);
-    var previewId = btn.attr('data-preview-id');
-    var message = $('input[data-preview-id='+previewId+']').val();
-    btn.attr("disabled",true);
-      $.ajax({
-        url: "<%= say_voice_lines_path %>",
-        method: "get",
-        data: { m: message },
-        success: function(d,s,x){
-          $('audio#player').attr("src",d);
-          $('audio#player')[0].play();
-        },
-        complete: function(){ btn.removeAttr("disabled"); }
-      });
-  });
+$('a.preview').on('click',function(e){
+  e.preventDefault();
+  var btn = $(this);
+  var previewId = btn.attr('data-preview-id');
+  var message = $('input[data-preview-id='+previewId+']').val();
+  computer_speak(message);
+});
 </script>
