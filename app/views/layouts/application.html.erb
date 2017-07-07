@@ -16,8 +16,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-      var speak_worker_path = '<%= asset_path('speak/speakWorker') %>';
-      var speak_generator_path = '<%= asset_path('speak/speakGenerator') %>';
+      var speak_worker_path = '<%= javascript_path('speak/speakWorker') %>';
+      var speak_generator_path = '<%= javascript_path('speak/speakGenerator') %>';
     </script>
     <%= javascript_include_tag 'speak/speakClient' %>
   </head>

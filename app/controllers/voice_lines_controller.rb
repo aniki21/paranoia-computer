@@ -1,4 +1,6 @@
 class VoiceLinesController < ApplicationController
+  skip_before_filter :fetch_missions, only: [:say]
+
   # GET /voice_lines
   def index
     @generic_lines = VoiceLine.generic
