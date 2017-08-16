@@ -23,10 +23,50 @@
   </head>
 
   <body>
-    <%= render partial: "shared/header" %>
-    <div class="container">
-      <%= render partial: "shared/flashes" %>
-      <%= yield %>
+    <div class="content">
+      <%= render partial: "shared/header" %>
+      <div class="container">
+        <%= render partial: "shared/flashes" %>
+        <%= yield %>
+
+
+        <hr />
+        <h3>Settings</h3>
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Voice speed</h4>
+            <div class="row">
+              <div class="col-md-2">
+                <input id="voice_speed_value" type="text" class="form-control" value="165" disabled />
+              </div>
+              <div class="col-md-4">
+                <input type="range" name="voice_speed" id="voice_speed" value="165" min="100" max="200" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h4>Word gap</h4>
+            <div class="row">
+              <div class="col-md-2">
+                <input id="voice_wordgap_value" type="text" class="form-control" value="3" disabled />
+              </div>
+              <div class="col-md-4">
+                <input type="range" name="voice_wordgap" id="voice_wordgap" value="3" min="0" max="100" class="form-control">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+            <a href="//twitter.com/aniki21" target="_blank">@aniki21</a> | <a href="https://github.com/aniki21/paranoia-computer" target="_blank">Source</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div id="audio"></div>
@@ -74,10 +114,18 @@
       // General-purpose function for consistent options
       var computer_speak = function(line){
         speak.play(line,{
-          speed: 160,
+          speed: $('#voice_speed').val(),
+          wordgap: $('#voice_wordgap').val(),
           pitch: (Math.ceil(Math.random() * 20) + 50) // vary pitch
         });
       }
+
+      $('#voice_wordgap').on('change',function(){
+        $('#voice_wordgap_value').val($(this).val());
+      });
+      $('#voice_speed').on('change',function(){
+        $('#voice_speed_value').val($(this).val());
+      });
     </script>
   </body>
 </html>
