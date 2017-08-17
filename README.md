@@ -1,5 +1,7 @@
 # paranoia-computer
-The voice of your friend the computer.
+## The voice of your friend the computer.
 
-eSpeak Javascript implementation by @katsuyan
-https://speak-demo.herokuapp.com/
+Heroku-ready Ruby on Rails application.
+
+eSpeak Javascript implementation by kripken
+https://github.com/kripken/speak.js/

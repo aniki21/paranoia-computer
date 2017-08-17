@@ -26,36 +26,10 @@
     <div class="content">
       <%= render partial: "shared/header" %>
       <div class="container">
+        <%= render partial: "shared/voice_controls" %>
         <%= render partial: "shared/flashes" %>
         <%= yield %>
 
-
-        <hr />
-        <h3>Settings</h3>
-        <div class="row">
-          <div class="col-md-6">
-            <h4>Voice speed</h4>
-            <div class="row">
-              <div class="col-md-2">
-                <input id="voice_speed_value" type="text" class="form-control" value="165" disabled />
-              </div>
-              <div class="col-md-4">
-                <input type="range" name="voice_speed" id="voice_speed" value="165" min="100" max="200" class="form-control">
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <h4>Word gap</h4>
-            <div class="row">
-              <div class="col-md-2">
-                <input id="voice_wordgap_value" type="text" class="form-control" value="3" disabled />
-              </div>
-              <div class="col-md-4">
-                <input type="range" name="voice_wordgap" id="voice_wordgap" value="3" min="0" max="100" class="form-control">
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -71,61 +45,54 @@
 
     <div id="audio"></div>
     <script type="text/javascript">
-      // Play a pre-set line
-      $('a.line').on('click',function(e){
-        var btn = $(this);
-        e.preventDefault();
-        if(btn.attr("disabled") == undefined){
-          var line_id = $(this).attr('data-line-id');
-          $.ajax({
-            url: "<%= say_voice_lines_path %>",
-            method: "get",
-            data: { l: line_id },
-            success: function(d,s,x){
-              computer_speak(d);
-            },
-            complete: function(){ btn.removeAttr("disabled"); }
-          });
-        }
-      });
-      
-      // Play an announcement line
-      $('#announce').on('submit',function(e){
-        e.preventDefault();
-        var message = $('#announcement').val();
-        if(message != ""){
-          computer_speak(message);
-          $('#prev-announcement').html(message);
-          $('#announcement').val("");
-        }
-      });
-    
-      // Up-arrow reuses previous announcement
-      $('#announcement').on('keyup',function(e){
-        var ths = this, $ths = $(this)
-        if(e.which == 38){
-          prev = $('#prev-announcement').html();
-          $ths.val(prev);
-          l = $ths.val().length * 2;
-          ths.setSelectionRange(l,l);
-        }
-      });
-      
-      // General-purpose function for consistent options
-      var computer_speak = function(line){
-        speak.play(line,{
-          speed: $('#voice_speed').val(),
-          wordgap: $('#voice_wordgap').val(),
-          pitch: (Math.ceil(Math.random() * 20) + 50) // vary pitch
-        });
-      }
+// Play a pre-set line
+$('a.line').on('click',function(e){
+  var btn = $(this);
+  e.preventDefault();
+  if(btn.attr("disabled") == undefined){
+    var line_id = $(this).attr('data-line-id');
+    $.ajax({
+      url: "<%= say_voice_lines_path %>",
+      method: "get",
+      data: { l: line_id },
+      success: function(d,s,x){
+        computer_speak(d);
+      },
+      complete: function(){ btn.removeAttr("disabled"); }
+    });
+  }
+});
 
-      $('#voice_wordgap').on('change',function(){
-        $('#voice_wordgap_value').val($(this).val());
-      });
-      $('#voice_speed').on('change',function(){
-        $('#voice_speed_value').val($(this).val());
-      });
+// Play an announcement line
+$('#announce').on('submit',function(e){
+  e.preventDefault();
+  var message = $('#announcement').val();
+  if(message != ""){
+    computer_speak(message);
+    $('#prev-announcement').html(message);
+    $('#announcement').val("");
+  }
+});
+
+// Up-arrow reuses previous announcement
+$('#announcement').on('keyup',function(e){
+  var ths = this, $ths = $(this)
+    if(e.which == 38){
+      prev = $('#prev-announcement').html();
+      $ths.val(prev);
+      l = $ths.val().length * 2;
+      ths.setSelectionRange(l,l);
+    }
+});
+
+// General-purpose function for consistent options
+var computer_speak = function(line){
+  speak.play(line,{
+    speed: parseInt($('#voice_speed').val()),
+    wordgap: parseInt($('#voice_wordgap').val()),
+    pitch: (Math.ceil(Math.random() * 20) + parseInt($('#voice_pitch').val())) // vary pitch
+  });
+}
     </script>
   </body>
 </html>
