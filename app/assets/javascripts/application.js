@@ -15,7 +15,6 @@
 //= require speak/speakClient
 //= require_tree .
 
-
 // Load a setting from localStorage, or use a default
 var loadSetting = function(key,default_value){
   if(typeof(Storage) !== "undefined"){
@@ -23,7 +22,6 @@ var loadSetting = function(key,default_value){
   }
   return default_value;
 };
-
 
 // Save a setting to localStorage
 var saveSetting = function(key,value){

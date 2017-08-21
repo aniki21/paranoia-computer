@@ -2,13 +2,23 @@
 <%= form_for line, html: { class: "form-horizontal" } do |f| %>
   <tr>
     <% unless generic %>
-      <td><%= f.number_field :mission_id, class: "form-control" %></td>
+      <td>
+        <%= f.number_field :mission_id, class: "form-control" %>
+        <% if line.new_record? %><small class="help-block">0 = Generic</small><% end %>
+      </td>
     <% end %>
-    <td><%= f.text_field :name, class: "form-control" %></td>
     <td>
-      <%= f.text_field :lines, class: "form-control", data: { preview_id: preview_id } %></td>
+      <%= f.text_field :name, class: "form-control" %>
+      <% if line.new_record? %><small class="help-block">Required</small><% end %>
     </td>
-    <td><%= f.text_field :button_class, class: "form-control" %></td>
+    <td>
+      <%= f.text_field :lines, class: "form-control", data: { preview_id: preview_id } %>
+      <% if line.new_record? %><small class="help-block">Pipe-separated for randomly-selected options</small><% end %>
+    </td>
+    <td>
+      <%= f.text_field :button_class, class: "form-control" %>
+      <% if line.new_record? %><small class="help-block"><%= link_to "Options", "https://getbootstrap.com/docs/4.0/components/buttons/#examples", target: "_blank" %></small><% end %>
+    </td>
     <td>
       <%= link_to "<i class=\"fa fa-volume-up\"></i>".html_safe, "javscript:void(0);", class: "btn btn-info preview", title: "preview", data: { preview_id: preview_id } %>
     </td>
