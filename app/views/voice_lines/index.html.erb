@@ -59,7 +59,7 @@
         <%= render partial: "voice_lines/line", locals: { line: VoiceLine.new(mission_id: mission_id), preview_id: line_counter } %> 
         <% line_counter += 1 %>
 
-        <% mission_lines = VoiceLine.for_mission(mission_id) %>
+        <% mission_lines = VoiceLine.for_mission(mission_id).order(position: :asc) %>
         <% mission_lines.each do |line| %>
           <%= render partial: "voice_lines/line", locals: { line: line, preview_id: line_counter } %> 
           <% line_counter += 1 %>

@@ -3,7 +3,7 @@ class VoiceLinesController < ApplicationController
 
   # GET /voice_lines
   def index
-    @generic_lines = VoiceLine.generic
+    @generic_lines = VoiceLine.generic.order(position: :asc)
   end
   
   # POST /voice_lines
