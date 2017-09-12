@@ -5,7 +5,7 @@ class MissionsController < ApplicationController
   def show
     @mission_id = params[:id].present? ? params[:id].to_i : 1
     @generic_lines = VoiceLine.generic
-    @mission_lines = VoiceLine.for_mission(@mission_id)
+    @mission_lines = VoiceLine.for_mission(@mission_id).order(position: :asc)
   end
 
 end

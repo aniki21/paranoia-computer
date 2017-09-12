@@ -56,7 +56,7 @@ class VoiceLinesController < ApplicationController
 
   private
   def line_params
-    params.require(:voice_line).permit(:name,:lines,:button_class, :mission_id)
+    params.require(:voice_line).permit(:name,:lines,:button_class, :mission_id, :position)
   end
 
 end

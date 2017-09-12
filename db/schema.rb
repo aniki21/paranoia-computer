@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170331211209) do
+ActiveRecord::Schema.define(version: 20170826185150) do
 
   create_table "voice_lines", force: :cascade do |t|
     t.integer  "mission_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20170331211209) do
     t.datetime "updated_at",                       null: false
     t.string   "name"
     t.string   "button_class", default: "default"
+    t.integer  "position"
   end
 
 end
